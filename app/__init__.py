@@ -8,7 +8,7 @@ def create_app(config_class=Config):
     
     # 2. Carrega as configurações
     app.config.from_object(config_class)
-
+    
     # 3. Inicializa as extensões com o app
     db.init_app(app)
     login_manager.init_app(app)
