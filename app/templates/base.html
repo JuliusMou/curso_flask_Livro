@@ -15,7 +15,9 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
+          <li><a href="{{ url_for('default.index') }}">Home</a></li>
+          <li><a href="{{ url_for('default.formulario') }}">Formulário</a></li>
+          <li><a href="{{ url_for('default.perfil') }}">Meu Perfil</a></li>
       </ul>
     </div>
   </div>

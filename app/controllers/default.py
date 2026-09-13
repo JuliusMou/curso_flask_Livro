@@ -57,3 +57,17 @@ def formulario():
     return render_template('formulario.html',
                            form=form,
                            name=session.get('name'))
+
+@bp.route('/perfil')
+def perfil():
+    # Tenta pegar o nome que está salvo na sessão (memória do navegador)
+    nome = session.get('name')
+    
+    # Se existe um nome na sessão, mostramos uma mensagem de boas vindas
+    if nome:
+        return f"<h1>Bem-vindo ao seu perfil, {nome}!</h1>"
+    
+    # Se não existe (usuário não preencheu o formulário), mandamos ele de volta
+    else:
+        flash("Acesso negado: Por favor, identifique-se preenchendo o formulário primeiro.")
+        return redirect(url_for('default.formulario'))
