@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Nova Categoria</h3>
+            </div>
+            <div class="panel-body">
+                {{ wtf.quick_form(form, action=url_for('categorias.nova'), method='post') }}
+                <a href="{{ url_for('categorias.listar') }}" class="btn btn-default">Voltar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

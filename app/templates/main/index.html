@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Dashboard <small>Bem-vindo, {{ current_user.user_name }}!</small></h1>
+        </div>
+    </div>
+</div>
+
+<!-- Cards de Resumo -->
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-danger">
+            <div class="panel-body text-center">
+                <h4>Contas Pendentes</h4>
+                <h2>{{ contas_pendentes }}</h2>
+                <p class="text-muted">R$ {{ "%.2f"|format(total_contas_pendentes) }}</p>
+                {% if contas_vencidas > 0 %}
+                <span class="label label-danger">{{ contas_vencidas }} vencidas</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-body text-center">
+                <h4>Receitas do Mês</h4>
+                <h2>R$ {{ "%.2f"|format(total_receitas_mes) }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-warning">
+            <div class="panel-body text-center">
+                <h4>Despesas do Mês</h4>
+                <h2>R$ {{ "%.2f"|format(total_despesas_mes) }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel {% if saldo_mes >= 0 %}panel-success{% else %}panel-danger{% endif %}">
+            <div class="panel-body text-center">
+                <h4>Saldo do Mês</h4>
+                <h2>R$ {{ "%.2f"|format(saldo_mes) }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Últimas Contas e Receitas -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Últimas Contas
+                    <a href="{{ url_for('contas.listar') }}" class="btn btn-xs btn-default pull-right">Ver todas</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if ultimas_contas %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for conta in ultimas_contas %}
+                            <tr>
+                                <td>{{ conta.descricao }}</td>
+                                <td>R$ {{ "%.2f"|format(conta.valor) }}</td>
+                                <td>{{ conta.data_vencimento.strftime('%d/%m/%Y') }}</td>
+                                <td>
+                                    <span class="label {% if conta.status.value == 'pago' %}label-success{% else %}label-warning{% endif %}">
+                                        {{ conta.status.value.capitalize() }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center">Nenhuma conta cadastrada.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Últimas Receitas
+                    <a href="{{ url_for('receitas.listar') }}" class="btn btn-xs btn-default pull-right">Ver todas</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if ultimas_receitas %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Recebimento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for receita in ultimas_receitas %}
+                            <tr>
+                                <td>{{ receita.descricao }}</td>
+                                <td>R$ {{ "%.2f"|format(receita.valor) }}</td>
+                                <td>{{ receita.data_recebimento.strftime('%d/%m/%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center">Nenhuma receita cadastrada.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ações Rápidas</h3>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('contas.nova') }}" class="btn btn-primary">Nova Conta</a>
+                    <a href="{{ url_for('receitas.nova') }}" class="btn btn-success">Nova Receita</a>
+                    <a href="{{ url_for('categorias.nova') }}" class="btn btn-info">Nova Categoria</a>
+                    <a href="{{ url_for('categorias.listar') }}" class="btn btn-default">Gerenciar Categorias</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
