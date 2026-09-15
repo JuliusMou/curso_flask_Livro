@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from app.extensions import db
 from app.models.tables import Conta, Categoria, StatusConta, TipoCategoria
 from app.models.forms import ContaForm
-
+from datetime import date
 bp = Blueprint('contas', __name__, url_prefix='/contas')
 
 
@@ -22,7 +22,7 @@ def _popular_categorias_form(form, tipo=TipoCategoria.DESPESA):
 @login_required
 def listar():
     contas = Conta.query.filter_by(user_id=current_user.id).order_by(Conta.data_vencimento.desc()).all()
-    return render_template('contas/listar.html', contas=contas)
+    return render_template('contas/listar.html', contas=contas, today=date.today())
 
 
 @bp.route('/nova', methods=['GET', 'POST'])
